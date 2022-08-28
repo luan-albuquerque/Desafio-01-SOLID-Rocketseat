@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { User } from "../../model/User";
 import { IUsersRepository, ICreateUserDTO } from "../IUsersRepository";
 
@@ -19,23 +20,51 @@ class UsersRepository implements IUsersRepository {
   }
 
   create({ name, email }: ICreateUserDTO): User {
-    // Complete aqui
+    const user = new User();
+
+    Object.assign(user, {
+      name,
+      email,
+      admin: false,
+      created_at: new Date(),
+      updated_at: undefined,
+    });
+
+    this.users.push(user);
+
+    return user;
   }
 
   findById(id: string): User | undefined {
-    // Complete aqui
+    const user = this.users.find((item) => item.id === id);
+
+    return user;
   }
 
   findByEmail(email: string): User | undefined {
-    // Complete aqui
+    const user = this.users.find((item) => item.email === email);
+
+    return user;
   }
 
   turnAdmin(receivedUser: User): User {
-    // Complete aqui
+    // eslint-disable-next-line array-callback-return
+    return this.users.find(
+      (item: User): User => {
+        if (item.id === receivedUser.id) {
+          item.admin = true;
+          item.name = receivedUser.name;
+          item.email = receivedUser.email;
+          item.created_at = receivedUser.created_at;
+          item.updated_at = new Date();
+        }
+        return item;
+      },
+    );
   }
 
   list(): User[] {
-    // Complete aqui
+    return this.users;
   }
 }
 
