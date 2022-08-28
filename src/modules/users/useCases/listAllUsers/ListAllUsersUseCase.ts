@@ -17,7 +17,10 @@ class ListAllUsersUseCase {
     if (!user.admin) {
       throw new Error("É nescessario privilegio de admin");
     }
-    return this.usersRepository.list();
+
+    const users = this.usersRepository.list();
+
+    return users;
   }
 }
 

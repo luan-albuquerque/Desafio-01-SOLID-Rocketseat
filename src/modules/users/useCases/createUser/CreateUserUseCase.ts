@@ -14,8 +14,9 @@ class CreateUserUseCase {
     if (findByEmail) {
       throw new Error("Email já cadastrado");
     }
-    const result = this.usersRepository.create({ name, email });
-    return result;
+
+    const user = this.usersRepository.create({ name, email });
+    return user;
   }
 }
 

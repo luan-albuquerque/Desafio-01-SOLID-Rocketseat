@@ -27,7 +27,7 @@ class UsersRepository implements IUsersRepository {
       email,
       admin: false,
       created_at: new Date(),
-      updated_at: undefined,
+      updated_at: new Date(),
     });
 
     this.users.push(user);
@@ -48,23 +48,22 @@ class UsersRepository implements IUsersRepository {
   }
 
   turnAdmin(receivedUser: User): User {
-    // eslint-disable-next-line array-callback-return
-    return this.users.find(
-      (item: User): User => {
-        if (item.id === receivedUser.id) {
-          item.admin = true;
-          item.name = receivedUser.name;
-          item.email = receivedUser.email;
-          item.created_at = receivedUser.created_at;
-          item.updated_at = new Date();
-        }
-        return item;
-      },
+    const userIndex = this.users.findIndex(
+      (user) => user.id === receivedUser.id,
     );
+
+    this.users[userIndex].admin = true;
+    this.users[userIndex].updated_at = new Date();
+
+    const user = this.users[userIndex];
+
+    return user;
   }
 
   list(): User[] {
-    return this.users;
+    const { users } = this;
+
+    return users;
   }
 }
 
